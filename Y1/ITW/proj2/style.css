@@ -1,0 +1,269 @@
+body{
+	font-family: Arial,sans-sefir;
+	font-size: 12pt;
+	line-height: 1.2;
+	color:#475672;
+	margin:0;
+	/*overflow: hidden;*/
+}
+
+html{
+	background: url(images/mountain.jpg) center center fixed;
+	background-repeat: no-repeat;
+ 	1-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}
+
+
+header img{
+	position: relative;
+	top:40px;
+}	
+
+header{
+	min-width:800px;
+	max-width:1200px;
+	margin:auto;
+}
+#inner-page{
+	clear:right;
+	overflow: hidden;
+	padding-bottom: 50;
+	/*position: relative;
+	top:80px;*/
+	margin-top: 80px;
+	min-height: 615px;
+	background-color: #DDF1FB;
+	z-index: -1;
+	min-width:800px;
+	max-width:1200px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#inner-page img#main{
+	width: 100%;
+	margin: auto;
+
+}
+
+
+#inner-page li{
+	display: inline;
+	list-style-type: none;
+}
+
+#inner-page img#enviro{
+	padding:30px;
+	padding-top: 100px;
+	overflow: hidden;
+	display: block;
+	position: relative;
+	float: right;
+}
+a{
+	z-index: 2;
+	text-decoration: none;
+	color:#475672;
+}
+
+/*
+#page{
+	min-width:800px;
+	max-width:1200px;
+	margin:auto;
+}*/
+
+
+
+nav#menubar{
+	display: block;
+	float:right;
+	position: relative;
+	
+	background-size: 100% 100%;
+	margin:auto;
+	width:90%;
+	margin-top: 60px
+
+}
+
+nav#menubar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    float:left;
+
+}
+
+nav#menubar li.dropdown {
+	background-color: #009EE5;
+    float: left;
+}
+
+nav#menubar a.main{
+	border: 1px solid #666666;
+    border-top: transparent;
+    border-bottom: transparent;
+    display: inline-block;
+	color:#666666;
+	text-align: center;
+	padding: 10px 26px;
+	text-decoration: none;
+	position: relative;
+ }
+
+ nav#menubar li.dropdown a:hover {
+    background-color: white;
+ }   
+
+nav#menubar ul.sub-menu {
+	width: 160px;
+	display: none;
+    list-style-type: none;
+   	position:absolute;
+    top:39px; 
+}
+
+nav#menubar li.dlist {
+	width: 100%;
+	position:relative;
+    margin:0;
+    display:block;
+	background-color: #7DCDF1;
+}
+
+nav#menubar li.dlist a{
+	width: 100%;
+    display: inline-block;
+	color:#666666;
+	text-align: left;
+	padding: 8px 20px;
+	text-decoration: none;
+	position: relative;
+ }
+
+#menubar li.arrow a{
+	background-image: url(images/caretb.png);
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+ nav#menubar li.dlist a:hover {
+    background-color: white;
+}
+
+
+section#General, section#News, section#QR{
+	padding: 10px;
+}
+
+footer{
+	width: 100%;
+	height:150px;
+	/*position: absolute;
+	bottom: 0px;
+	left:0px;*/
+	top: 80px;
+	position: relative;
+	background-color:#009EE5; 
+	overflow: hidden;
+}
+
+footer p{
+	display: block;
+	position: absolute;
+	bottom: 0;
+	right:20px;
+	color: #666666;
+	padding:0;
+	margin: 0;
+}
+
+.left{
+	width: 10%;
+	float: left;
+	padding: 20px;
+}
+
+#Map{
+	min-width:800px;
+	max-width:1200px;
+	margin:auto;
+}
+
+table th {
+  background-color: #009EE5;
+  border: 1px solid #0000CC;
+  color:#666666; 
+}
+
+table td {
+  border-top: 1px solid black;
+  border-bottom: 1px solid #656565;
+  color: black; 
+}
+
+table td a {
+	text-decoration: none;
+} 
+
+table{
+	border: 2px solid black;
+	width:100%;
+}
+
+table#rope{
+	width:40%;
+}
+
+img#QRimage{
+	display: none;
+	cursor: pointer;
+}
+
+p#hideQRc{
+	display: none;
+}
+a#QRc{
+	display: block;
+}
+
+a.next{
+	position: relative;
+	margin-left: 10px;
+	margin-bottom: 20px;
+	font-size: 150%;
+	margin-top: 30px;
+}
+
+a.next:hover{
+	color: #009EE5;
+}
+
+div#foot{
+	position: relative;
+}
+
+#textfield{
+	margin:	40px;
+}
+
+img.photos{
+	cursor: pointer;
+}
+img.photos:hover{
+	border: 2px solid #666666
+}
+p#underp{
+	font-size: 120%;
+}
+
+iframe{
+	position: relative;
+	left: 140px;
+	bottom: 80px;
+}

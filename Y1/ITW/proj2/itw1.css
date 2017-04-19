@@ -1,0 +1,338 @@
+body{
+	font-family: Arial,sans-sefir;
+	font-size: 12pt;
+	line-height: 1.2;
+
+	width: 100%;
+	min-width:650px;
+	height:200px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+#header{
+	background-color: #f7f8ff;
+	padding-top: 5px;
+	border-bottom: 1px solid #eeeeee;
+	overflow: hidden;
+	background-size: 100%;
+	padding:15px;
+	padding-left: 35px;
+}
+
+#header .inner{
+	min-width:650px;
+	max-width:1200px;
+	margin:auto;
+}
+
+#main {
+	min-width:650px;
+	max-width:1200px;	
+	margin: auto;
+	padding:15px;
+
+}
+
+#related .inner{
+	min-width:650px;
+	max-width:1200px;
+	margin: auto;
+	overflow: hidden;
+}
+
+#related{
+	background-color: #3f5673;
+	color:white;
+	padding:15px;
+
+}
+
+#social{
+	background-color:#666666 ;
+	background-repeat: repeat-x;
+	position: fixed;
+	width:100%;
+	top:0;
+	left:0;
+	z-index: 5;
+	padding-top: 3px;
+	padding-left: 3px;
+	padding-bottom: 1px;
+}
+
+.icons .twitter{
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-image: url(images/i_twitter.png);
+}
+
+.icons .fb{
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-image: url(images/i_fb.png);
+}
+
+.icons .linkedin{
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-image: url(images/i_linkedin.png);
+}
+
+.icons span{
+	display: none;
+}
+
+#topmenu .login{
+	background-image: url(images/loginlink.png);
+	color:white;
+	background-repeat: no-repeat;
+	background-position: right;
+	text-transform: lowercase;
+	text-decoration: none;
+	position: fixed;
+	z-index: 10;
+	top:7px;
+	right:15px;
+	padding-right: 10px;
+	font-size: 90%;
+}
+
+#topmenu hr{
+	display:none;
+}
+
+.hidden{
+	display: none;
+}
+
+#header h1 span{
+	display: none;
+}
+
+
+#header h1 a{
+	display: inline-block;
+	width: 188px;
+	height:71px;
+	background-image: url(images/logo.png) ;
+	float: left;
+}
+
+#footer {
+	display: block;
+	background-color:#666666 ;
+	width:100%;
+	position: relative;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+ #footer .inner .copy{
+ 	display: block;
+ 	position: relative;
+ 	z-index: 1;
+ 	color: white;
+ 	font-size: 90%;
+ 	padding-left: 10px;
+ }
+
+#footer .inner hr{
+ 	display: none;
+ }
+
+ #footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: absolute;
+    right:0;
+    z-index: 2;
+    padding-right: 15px;
+
+}
+
+#footer li {
+    float: left;
+    padding-right: 15px;
+}
+
+#footer li a {
+    display: block;
+    color: white;
+    
+    text-align: center;
+    font-size: 90%;
+}
+
+
+#menubar{
+
+	position: relative;
+	float:right;
+	background-color: #f7f8ff;
+	background-size: 100% 100%;
+}
+
+#menubar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    float:left;
+
+}
+
+#menubar li {
+    float: left;
+}
+
+#menubar li a {
+	border: 2px solid white;
+    	display: inline-block;
+	color:#666666;
+	text-align: center;
+	padding: 10px 26px;
+	text-decoration: none;
+	position: relative;
+	border-radius: 5px;
+ 	margin: 10px;
+   	z-index: 2;
+
+ }
+
+#menubar li.dropdown a{
+	background-image: url(images/caretb.png);
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+#menubar li.selected a{
+	background-image: url(images/caretw.png);
+	background-color:#42b3e5;
+	color:white;
+	border: 2px solid #42b3e5;
+}
+
+#menubar li.selected a:hover{
+	background-image: url(images/caretw.png);
+	background-color:#42b3e5;
+	border: 2px solid #42b3e5;
+}
+
+#menubar li a:hover {
+    background-color: white;
+}
+
+#main .inner header{
+	overflow: hidden;
+	display: block;
+	border-bottom: 1px solid #e0e0e0;
+
+}
+
+#main .inner header h2{
+	font-size: 250%;
+	color:#475672;
+}
+#main h3{
+	font-size: 200%;
+	color:#475672;
+}
+#main .inner header p{
+	font-style: italic;
+}
+
+#main .inner header .btn{
+	position: relative;
+	border: 2px solid white;
+	top: -40px;
+	right: 50px;
+   	border-radius: 5px;
+   	margin: 15px;
+   	z-index: 2;
+	float:right;
+}
+
+#main .inner header p.btn a{
+	font-style: normal;
+	text-decoration: none;
+	font-weight: bold;
+	color:white;
+    	padding: 14px 20px;
+    	display: block;
+  	text-align: center;
+	
+}
+#main .inner header .demo{
+	background-color:#faa732;
+}
+
+#main .inner header .docs{
+	background-color:#42b3e5;
+}
+
+#main section{
+	padding-top: 30px;
+	overflow: hidden;
+	display: block;
+}
+
+#main section h3{margin-top:0;}
+
+#main section img{
+	overflow: hidden;
+	display: block;
+	position: relative;
+	float:right;
+}
+#related .inner{font-size: 90%;}
+
+#related .inner .col{
+	float:left;width: 35%;padding-right: 1%;
+}
+#related .inner .col h4{margin-bottom:0;font-size:120%;}
+#related .inner .col p{margin-top:0;}
+#related .inner .col h3 a{font-size:120%;}
+
+#related .inner aside{
+	float:left; width:64%;
+}
+
+#related .inner aside #didyouknow{
+	float:left; width:49%;padding-right: 1%;
+}
+
+#related .inner aside #references{
+	float:left; width:50%;
+}
+
+#related .abox a{text-decoration: none; }
+
+#related a{color:white;}
+
+#related .inner aside #references .sgn, #related .inner #news strong{
+	display: block;
+	padding-left: 20px;
+	color: #42b3e5;
+}
+
+#related .inner #news strong::after{
+	content: "...see more...";
+	position: relative;
+	float: right;
+	cursor: pointer;
+	font-size:80%;
+}
+
+#related .inner #news p{
+	overflow:hidden;
+	display: block;
+	height:70px;
+
+}
