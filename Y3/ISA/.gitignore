@@ -1,0 +1,8 @@
+*\.o
+myldap
+client
+isatest.csv
+doc/build/*
+xbazik00.tar
+a.out
+tests/*

@@ -1,0 +1,26 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "chrono": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "iostream": "cpp",
+        "cstddef": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp",
+        "system_error": "cpp",
+        "new": "cpp",
+        "sstream": "cpp",
+        "stack": "cpp",
+        "iosfwd": "cpp",
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "stdexcept": "cpp",
+        "fstream": "cpp"
+    }
+}

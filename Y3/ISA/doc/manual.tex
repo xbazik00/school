@@ -1,0 +1,334 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[slovak]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+
+\title{LDAP}
+\author{Martin Bažík}
+
+\sloppy
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Vysoké Učení Technické v Brne}\\[1.5cm] % Name of your university/college
+\textsc{\Large Fakulta Informačných technológií}\\[0.5cm] % Major heading such as course name
+\textsc{\large Sieťové aplikácie a správa sietí}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries LDAP server}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+\Large \emph{Autor:}\\
+Martin \textsc{Bažík}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm]
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[scale=0.8]{img/fitnew.png}\\[1cm] 
+\vfill
+
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Úvod}
+Cieľom tohoto projektu je vytvoriť LDAP server, ktorý dokáže na základe databázy záznamov uložených v súbore CSV formátu spracovať a odpovedať na vyhľadávanie protokolu LDAP. Tento server je konkurentný a implementuje jednoduché naviazanie (simple bind) a vyhľadávanie pomocou Search operácie. Vyhľadávanie implementuje filtre and (0), or (1), not (2), equalityMatch (3), substrings (4) a present(7). Tento dokument obsahuje výťah informácií o fungovaní protokolu LDAP a popis implementácie samotného LDAP serveru. 
+
+\section{LDAP Protokol}
+\cite{rfc2251}LDAP je protokol, ktorý poskytuje prístup ku adresáru. Protokol je zacielený na správcovské a prehľadávacie aplikácie, ktoré poskytujú vykonávať operácie nad adresárom. Ide o atomické operácie, ktoré sú vykonávané vo vrstve LDAP správ (message layer). Po ukončení spojenia sú nespracované operácie na správovej vrstve zahodené alebo spracované bez odpovede. Synchronizácia akcií medzi klientom a serverom nie je potrebná.
+\linebreak
+
+\noindent\textbf{Kľúčové aspekty LDAP protokolu:}
+\begin{itemize}
+	\item Popísaný ASN.1 notáciou.
+	\item Prenášaný priamo nad TCP alebo iným transportným protokolom
+	\item Všetky dátové objekty sú kódované ako bežný reťazec
+	\item SASL môže byť použité na zabezpečenie
+	\item Hodnoty a názvy musia využívať znakovú sadu ISO 10646
+	\item Schéma je zverejnená v adresári pre klienta
+\end{itemize}
+
+\subsection{Správa\label{message}}
+\cite{rfc4511}Všetky protokolové operácie sú zabalené do obálky LDAPMessage:
+\begin{figure}[H]
+\begin{verbatim}
+        LDAPMessage ::= SEQUENCE {
+             messageID       MessageID,
+             protocolOp      CHOICE {
+                  bindRequest           BindRequest,
+                  bindResponse          BindResponse,
+                  unbindRequest         UnbindRequest,
+                  searchRequest         SearchRequest,
+                  searchResEntry        SearchResultEntry,
+                  searchResDone         SearchResultDone,
+                  ...,
+                  intermediateResponse  IntermediateResponse },
+             controls       [0] Controls OPTIONAL }
+
+        MessageID ::= INTEGER (0 ..  maxInt)
+
+        maxInt INTEGER ::= 2147483647 -- (2^^31 - 1) --
+\end{verbatim}
+\caption{Formát LDAP správy}
+\end{figure}
+
+\subsubsection{Riešenie chýb}
+V prípade, že značka LDAPMessage nemôže byť rozoznaná, messageID zanalyzovaná, protocolOp nie je rozpoznaný ako požiadavka alebo kódovanie alebo dĺžka nie sú správne, spojenie musí byť ukončené s voliteľnou informáciou o ukončení. Inak musí vrátiť releventnú odpoveď s položkou resultCode nastavenou na príslušnú hodnotu, napríklad \texttt{protocolError(2)}. 
+
+\subsection{MessageID}
+MessageID označuje správu jedinečným identifikátorom typu \texttt{integer}. Tento identifikátor je vygenerovaný klientom pri žiadosti a server musí využiť tento identifikátor na všetky odpovede na túto žiadosť. Musí ísť o jedinečnú hodnotu v rámci transakcie.
+
+\subsection{ProtocolOP}
+ProtocolOP reprezentuje protokolovú operáciu, ktorá sa má na danom zariadení vykonať. Jednotlivé operácie je možné vidieť v sekcii \ref{message}. Keďže je tento projekt zameraný na vyhľadávanie, v rámci tohoto projektu sú relevantné iba niektoré z nich. Patria medzi ne \texttt{BindRequest, BindResponse, UnbindRequest, SearchRequest a SearchResultDone}. Funkciou väčšiny ostatných operácií je meniť obsah ldap databázy, a teda nie sú podstatné pre riešenie tohoto projektu.
+
+\subsubsection{Operácia Bind}
+Bind operácia môže byť prvá operácia, ktorá zahájuje komunikáciu medzi klientom a serverom. Jej hlavnopu funkciou je výmena autentifikačnej informácie. Po prijatí BindRequest žiadosti  server autentifikuje klienta a vráti BindResponse odpoveď so stavom autentifikácie. Od LDAP verzie 3 nie je Bind operácia nevyhnutná a klient môže začať komunikáciu a inou operáciou ako neautentifikovaný. V prípade, že server potrebuje klienta autentifikovať pre vykonanie operácie, môže inú operáciu ako Bind, Unbind alebo rozšírenú žiadosť zakázať pomocou \texttt{resultCode} nastaveného na \texttt{operationError(2)}. Po odpovedi s \texttt{operationError} výsledkom môže klient poslať BindRequest.  Klient môže požiadať o Bind operáciu aj viackrát. V tomto projekte je využitá iba jednoduchá Bind operácia bez autentifikácie \texttt{simple bind}.\\
+
+\begin{figure}[H]
+\begin{verbatim}
+        BindRequest ::= [APPLICATION 0] SEQUENCE {
+                version                 INTEGER (1 .. 127),
+                name                    LDAPDN,
+                authentication          AuthenticationChoice }
+\end{verbatim}
+\caption{Formát BindRequest}
+\end{figure}
+
+Odpoveďou na BindRequest je BindResponse. BindResponse predstavuje jednoduchú odpoveď, ktorá buď vráti návratový kód ako úspech, alebo nastaví príslušnú chybu. Chybou môže byť napríklad \texttt{operationsError} alebo \texttt{protocolError} pre chybný protokol. Ak klient prijme \texttt{operationError} musí ukončiť spojenie.\\
+
+\begin{figure}[H]
+\begin{verbatim}
+        BindResponse ::= [APPLICATION 1] SEQUENCE {
+             COMPONENTS OF LDAPResult,
+             serverSaslCreds    [7] OCTET STRING OPTIONAL }
+\end{verbatim}
+\caption{Formát BindResponse}
+\end{figure}
+
+\subsubsection{Operácia Unbind}
+Operácia \texttt{Unbind} slúži na ukončenie komunikácie a nie je párovou operáciou operácie Bind. \texttt{UnbindRequest} nemá žiadnu odpoveď a po prijatí tejto správy môže server ukončiť spojenie.
+
+\subsubsection{Operácia Search}
+Na vyhľadávanie záznamov štruktúry LDAP sa využíva operácia \texttt{Search}. Jej základným cieľom je vrátiť záznamy, ktoré spĺňajú vyhľadávané kritériá. 
+
+Požiadavku operácie Search tvorí \texttt{SearchRequest}. Môže čítať atribúty z jedného záznamu, záznamov podriadenej úrovne alebo celého podstromu. Pre potreby tohoto projektu je podporované vyhľadávanie iba v rozsahu jedného záznamu (\texttt{baseObject(0)}). Ďalším vyhľadávacím obmedzením je \texttt{sizeLimit}, ktorý umožňuje určiť maximálny počet vrátených záznamov. Samotné filtrovanie žiadaných nástrojov má na starosti položka \texttt{filter} a požadované atribúty sú definované v položke \texttt{attributes}. \\
+
+\begin{figure}[H]
+\begin{verbatim}
+        SearchRequest ::= [APPLICATION 3] SEQUENCE {
+             baseObject      LDAPDN,
+             scope           ENUMERATED {
+                  baseObject              (0),
+                  singleLevel             (1),
+                  wholeSubtree            (2),
+                  ...  },
+             derefAliases    ENUMERATED {
+                  neverDerefAliases       (0),
+                  derefInSearching        (1),
+                  derefFindingBaseObj     (2),
+                  derefAlways             (3) },
+             sizeLimit       INTEGER (0 ..  maxInt),
+             timeLimit       INTEGER (0 ..  maxInt),
+             typesOnly       BOOLEAN,
+             filter          Filter,
+             attributes      AttributeSelection }
+\end{verbatim}
+\caption{Formát SearchRequest}
+\end{figure}
+
+\noindent Položka \texttt{filter} dokáže vykonať filtrovanie na základe výrazov, ktoré môžu byť do seba niekoľkonásobne zanorené. V tomto projekte sú brané do úvahy iba niektoré filtre. Patria medzi ne \texttt{and(0)}, \texttt{or(1)}, \texttt{not(2)}, \texttt{equalityMatch(3)}, \texttt{substrings(4)} a \texttt{present(7)}. Filtre \texttt{and}, \texttt{or} a \texttt{not} reprezentujú logické operácie konjunkcie, disjunkcie a negácie. Filtre \texttt{equalityMatch} a \texttt{substrings} tvoria výrazy, ktoré musia byť platné pre daný záznam. Prvý spomínaný vyhľadáva iba úplnú zhodu hodnoty atribútu. Filter \texttt{substrings} hľadá na základe regulárneho výrazu podreťazcu.\\ 
+
+\begin{figure}[H]
+\begin{verbatim}
+        Filter ::= CHOICE {
+             and             [0] SET SIZE (1..MAX) OF filter Filter,
+             or              [1] SET SIZE (1..MAX) OF filter Filter,
+             not             [2] Filter,
+             equalityMatch   [3] AttributeValueAssertion,
+             substrings      [4] SubstringFilter,
+             greaterOrEqual  [5] AttributeValueAssertion,
+             lessOrEqual     [6] AttributeValueAssertion,
+             present         [7] AttributeDescription,
+             approxMatch     [8] AttributeValueAssertion,
+             extensibleMatch [9] MatchingRuleAssertion,
+             ...  }
+\end{verbatim}
+\caption{Formát Filter}
+\end{figure}
+
+\noindent Regulárny výraz pre filter \texttt{substrings} je uložený v samostatnej položke. Tento výraz je založený na pozícii reťazca alfanumerických znakov. Môžu tvoriť začiatok hodnoty atribútu (\texttt{initial}), vnútro (\texttt{any}) alebo koniec (\texttt{final}).\\
+
+\noindent Príklad:\\
+
+\noindent Regulárny výraz \texttt{str*i*ng} sa pretvorí na postupnosť filtrov \texttt{initial[str]}, \texttt{any[i]} a \texttt{final[ng]}.\\
+
+\begin{figure}[H]
+\begin{verbatim}
+        SubstringFilter ::= SEQUENCE {
+             type           AttributeDescription,
+             substrings     SEQUENCE SIZE (1..MAX) OF substring CHOICE {
+                  initial [0] AssertionValue,  -- can occur at most once
+                  any     [1] AssertionValue,
+                  final   [2] AssertionValue } -- can occur at most once
+             }
+\end{verbatim}
+\caption{Formát SubstringFilter}
+\end{figure}
+
+\noindent Odpoveďou na požiadavok \texttt{SearchRequest} je \texttt{SearchResponse}. Pomocou tejto odpovede môže server vrátiť nula alebo viac záznamov správami typu \texttt{SearchResultEntry}. Každá takáto správa obsahuje jedinečný názov (DN) vyhľadaného objektu a zoznam vyhľadaných atribútov, ktoré sú definované v \texttt{SearchRequest}.\\
+
+\begin{figure}[H]
+\begin{verbatim}
+        SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
+             objectName      LDAPDN,
+             attributes      PartialAttributeList }
+             
+        PartialAttributeList ::= SEQUENCE OF
+             partialAttribute PartialAttribute
+\end{verbatim}
+\caption{Formát SearchResultEntry}
+\end{figure}
+
+\noindent Každá odpoveď \texttt{SearchResponse} musí byť ukončená správou typu \texttt{SearchResultDone}. Táto správa oznamuje, že vyhľadávanie bolo ukončené. Súčasťou tejto správy je položka \texttt{LDAPResult} oznamujúca prípadné chyby v položke \texttt{resultCode}, ako napríklad \texttt{timeLimitExceeded} alebo \texttt{sizeLimitExceeded} pri prekročení limitov. \\
+
+\begin{figure}[H]
+\begin{verbatim}
+        SearchResultDone ::= [APPLICATION 5] LDAPResult
+\end{verbatim}
+\caption{Formát SearchResultDone}
+\end{figure}
+
+\subsection{Správa výsledku}
+Konštrukcia \texttt{LDAPResult} sa využíva na oboznámenie klienta o úspešnosti operácie. V prípade chyby vracia kód, ktorý korešponduje s istým typom chyby v položke \texttt{resultCode}.\\
+
+\begin{figure}[H]
+\begin{verbatim}
+       LDAPResult ::= SEQUENCE {
+             resultCode         ENUMERATED {
+                  success                      (0),
+                  operationsError              (1),
+                  protocolError                (2),
+                  timeLimitExceeded            (3),
+                  sizeLimitExceeded            (4),
+                  ...  },
+             matchedDN          LDAPDN,
+             diagnosticMessage  LDAPString,
+             referral           [3] Referral OPTIONAL }
+\end{verbatim}
+\caption{Formát LDAPResult}
+\end{figure}
+
+\section{Implementácia}
+Program serveru je napísaný v programovacom jazyku C verzie 11. Server využíva BSD schránky a je naprogramovaný ako konkurentný server, ktorý pre každého klienta vytvorí vlastný proces. O nastavenie schránky sa stará funkcia \verb|setup_socket|. Zdrojový kód serveru je dostupný v súbore \texttt{server.cpp}. Implementácia samotného LDAP protokolu je definovaná na niekoľkých vrstvách. Základnou triedou, ktorá implemtentuje komunikáciu, je \texttt{LDAP}. Vstupné dáta sú ukladané vo forme poľa typu \verb|uint8_t| a odpoveď sa ukladá do vektoru toho istého typu.  
+
+\subsection{LDAP}
+Trieda \texttt{LDAP} je navrhnutá na ovládanie komunikácie LDAP protokolu. Zdrojový kód sa nachádza v súbore \texttt{ldap.cpp}. Na ovládanie komunikácie slúži verejná metóda \texttt{communicate}. Táto metóda spracováva prichádzajúce správy až kým nenastane chyba alebo nebola prijatá správa \texttt{unbind}.
+
+O jednotlivé časti komunikácie sa starajú metódy \texttt{receive} (prijme), \texttt{process} (spracuje) a \texttt{respond} (odpovie). V prípade ukončenia komunikácie sa zavolá funkcia \texttt{respondError}, ktorá v prípade chyby v \texttt{BindRequest} alebo \texttt{SearchRequest} vráti príslušnú správu \texttt{LDAPResult} , ktorá v položke \texttt{resultCode} obsahuje hodnotu \texttt{protocolError(0)}. Ak nebola zistená príslušná operácia, neposiela sa žiadna správa a ukončuje sa spojenie.
+
+Metóda \texttt{receive} spracuje prvé oktety správy a vytvorí objekt triedy LDAPMessage pre nasledovné spracovanie. Prevedenie potrebných operácií a vytvorenie odpovede má na starosti metóda \texttt{process}. Vytvorené správy sú následne odoslané pomocou \texttt{respond} metódy. 
+
+Každý objekt spojenia sa skladá z dvoch operácií, požiadavku \texttt{request} a vektor odpovedí \texttt{response}. Toto je zapríčinené tým, že každá požiadavka má odpoveď s rovnakým messageID.  
+
+\subsection{LDAPMessage}
+Spracovanie a vytvorenie nových LDAPMessage obálok vykonáva trieda \texttt{LDAPMessage}. Na spracovanie prijatých dát využíva metódu \texttt{parseMessage} s pomocnou statickou metódou \texttt{parseInt} na spracovanie a prevod celočíselnej hodnoty. Pre spracovanie samotnej operácie sa vytvorí objekt triedy \texttt{LDAPProtocolOp}. 
+
+Trieda LDAPMessage má dva konštruktory, jeden sa stará o uloženie dát prijatej správy, druhý vytvorí LDAPMessage obálku pre objekt triedy \texttt{LDAPProtocolOp} (pre odpoveď). S vytváraním obálky pre správu odpovede je spojená aj pomocná metóda \texttt{appendLengthToMessage}, ktorá pridá do výsledného vektoru oktetov naformátovanú dĺžku dát. Na pridávanie oktetov do finálneho vektoru \texttt{messVector} sa využíva metóda \texttt{appendVector}. 
+
+\subsection{LDAPProtocoOP}
+Spracovanie dát na najnižšej úrovni, vyhodnotenie požiadavkov operácie a vytvorenie odpovede prebieha pomocou triedy \texttt{LDAPProtocoOP}. Základ spracovania prichádzajúceho požiadavku tvorí stavový automat definovaný na stránke \texttt{Ldap ASN.1 Codec}\cite{ANS1}. Spracovanie začína metódou \texttt{parseRequest}, ktorá detekuje typ požiadavky. Následne sa ak ide o požiadavku \texttt{BindRequest} alebo \texttt{SearchRequest}, spustí sa buď metóda \texttt{parseBindRequest} alebo \texttt{parseSearchRequest}. V týchto metódach sa prechádza prijatá správa, ktorá je prijatá v poli a prechádzanie tohoto poľa je definované v preťaženej metóde \texttt{incrementIndex}. Táto metóda v prípade prekročenia veľkosti poľa vyhodí vlastnú výnimku \texttt{indexException}.
+
+Na spracovanie jednotlivých položiek typu BER boli vytvorené metódy \texttt{parseString} a \texttt{createString} na spracovanie reťazcov. Na spracovanie veľkosti sa využíva \texttt{parseSizeBER} a na spracovanie celého čísla \texttt{parseIntBER}. Okrem toho ešte existuje niekoľko pomocných metód.
+
+\subsubsection{Spracovanie požiadavkov}
+Metóda \texttt{parseBindRequest} iba skontroluje správnosť požiadavky BindRequest, keďže autentifikácia nie je potrebná. Požiadavka SearchRequest sa musím spracovať v metóde \texttt{parseSearchRequest}, aby mohla byť následne prevedená. V tejto metóde sa cez stavový automat postupne prejdú všetky položky požiadavky SearchRequest. Nepotrebné položky sú preskočené a skontroluje sa či ide o \texttt{scope} typu \texttt{baseObject(0)}. Ďalej sa uloží veľkosť \texttt{sizeLimit} a v samostatných metódach spracujú položky \texttt{filter} a \texttt{attributes}. 
+
+Filter sa spracuje v metóde \texttt{parseFilter}, kde sa postupne prejdú všetky filtre prijaté v požiadavke a uložia v štruktúre \texttt{reqStruct}. Táto štruktúra obsahuje veľkosť \texttt{sizeLimit} a pole štruktúr typu \texttt{fItem}. Štruktúra \texttt{fItem} reprezentuje jednotlivé filtre a pamätá si ich operandy, typ a dĺžku. Táto metóda využíva rekurziu na spracovanie všetkých položiek filtru. Na spracovanie podreťazca sa využíva metóda \texttt{parseSubString}, ktorá prevedie túto položku filtra na regulárny výraz.
+
+O spracovanie atribútov \texttt{attributes} sa stará metóda \texttt{parseAttributes}, ktorá tak ako \texttt{parseFilter} pracuje na základe rekurzívneho volania.
+
+\subsubsection{Vykonanie požiadavkov}
+Následne sa spracovaná správa vyhodnotí v metóde \texttt{processProtocolOp}, ktorá vráti vektor výsledných operácií. Tieto položky však musia byť ešte zabalené do \texttt{LDAPMessage} obálky. Na požiadavku BindRequest vytvorí jednoduchá odpoveď, keďže nie je potrebné autentifikovať.
+
+Požiadavka SearchRequest však požaduje vyhodnotenie požiadavku a vytvorenie odpovedí typu \texttt{SearchResultEntry} pre každý nájdený záznam a \texttt{SearchResultDone} na ukončenie spracovania požiadavku. Spracovanie súboru databázy na vektor záznamov má na starosti metóda \texttt{parseFile}. Výsledkom tohoto spracovania je sú dva vektory. Jeden obsahuje čísla jednotlivých riadkov pre jednoduchú indexáciu a druhý obsahuje samotné záznamy. Záznamy sú reprezentované vektorom atribútov.
+
+V ďalšom kroku sa vykonanie filtrovanie záznamov na základe požadovaných filtrov v metóde \texttt{parseFilter}. Filtrovanie rovnosti reťazca a podreťazca sa vykoná pomocou štandardnej metódy \texttt{compare} na filtrovanom atribúte a hodnote filtru. Logické operácie sú vykonané pomocou množinových operácií \verb|set_union|, \verb|set_intersection| a \verb|set_difference|.
+
+V poslednom kroku sa na základe nájdených záznamov vytvoria príslušné správy. Vytváraní sa dáva pozor na počet nájdených záznamov, ktorý musí byť menší ako \texttt{sizeLimit}. V prípade prekročenia tejto hodnoty sa vráti iba počet správ definovaný v \texttt{sizeLimit} a správa \texttt{SearchResultDone} bude obsahovať chybový kód \texttt{sizeLimitExceeded} (4). Ako položka DN správy \texttt{SearchResultEntry} sa nastaví uid záznamu a vrátia sa atribúty definované v položke \texttt{attributes} alebo všetky ak neboli žiadne špecifikované. Ak zadaný atribút nebol nájdený, ignoruje sa.
+
+
+\section{Testovanie}
+Prvotné testovanie prebiehalo na osobnom počítači, OS: Arch Linux, gcc v. 7.2. Server bol spustený na lokálnom počítači a následne boli posielané správy pomocou nástroja \texttt{ldapsearch} na tom istom zariadení. Bola využitá množina rôznych výrazov filtru, atribútov a rôznych prepínačov. Správnosť obsahu samotných správ bolo dosiahnuté pomocou nástroja \texttt{Wireshark} s filtrom \texttt{ldap}. Tento nástroj dokáže detekovať ak ide o chybné pakety.
+
+Následne bol tento projekt otestovaný na serveri \texttt{Merlin}, keďže ide o referenčný server. Toto testovanie fungovalo na základe posielania požiadavkov cez \texttt{ldapsearch} zo serveru \texttt{Eva}.
+
+Okrem toho bolo využitý aj jednoduchý TCP klient, ktorý posielal chybné správy na port LDAP serveru a bolo testované, ako na ne zareaguje.
+
+\section{Použitie}
+Spustenie serveru:\\
+
+\begin{verbatim}
+./myldap {-p <port>} -f <subor>
+\end{verbatim}
+
+\noindent Význam parametrov a ich hodnôt:
+\begin{verbatim}
+    -p <port>: Umožňuje špecifikovať konkrétny port, na ktorom začne 
+               server poslúchať požiadavky klientov. Predvolená hodnota
+               čísla portu je 389. Voliteľný prepínač.
+    -f <soubor>: Cesta k textovému súbor v formáte CSV. Povinný prepínač.
+\end{verbatim}
+
+\section{Rozšírenia}
+\begin{itemize}
+	\item Server dokáže spracovať národné znaky vo formáte UTF-8.
+	\item Server vráti vyžiadané atribúty. Príklad:
+	\begin{itemize}
+		\item \verb|ldapsearch -h hostname -p port -x -s base "(filter)" uid|
+		\item Tento príklad vráti iba atribút uid nájdených objektov.
+	\end{itemize}
+	\item Server dokáže spracovať filter PRESENT (7).
+\end{itemize}
+
+
+
+\newpage
+     
+\begin{thebibliography}{9}
+\bibitem{rfc2251}
+M. Wahl,T. Howes,S. Kille a i. December 1997. Request for Comments: 2251. URL: \texttt{https://www.ietf.org/rfc/rfc2251.txt}
+\bibitem{rfc4511}
+J. Sermersheim, Ed. Jún 2006. Request for Comments: 4511. URL: \texttt{https://www.ietf.org/rfc/rfc2251.txt}
+\bibitem{ANS1}
+Emmanuel Lécharny. Október 2006. Ldap ASN.1 Codec. URL: \\\texttt{https://cwiki.apache.org/confluence/display/DIRxSRVx10/Ldap+ASN.1+Codec}
+
+\end{thebibliography}
+\end{document}

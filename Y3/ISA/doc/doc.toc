@@ -1,0 +1,5 @@
+\select@language {slovak}
+\contentsline {section}{\numberline {1}\IeC {\'U}vod}{2}
+\contentsline {subsection}{\numberline {1.1}Ob\IeC {\'a}lka spr\IeC {\'a}vy}{2}
+\contentsline {section}{\numberline {2}Implement\IeC {\'a}cia}{3}
+\contentsline {section}{\numberline {3}Pou\IeC {\v z}itie}{3}
