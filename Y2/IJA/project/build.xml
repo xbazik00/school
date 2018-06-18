@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project name="Solitaire" default="compile" basedir=".">
+
+  <description>IJA projekt: Solitaire</description>
+
+  <property name="src.dir" location="src"/>
+  <property name="build.dir" location="build"/>
+  <property name="lib.dir" location="lib"/>
+  <property name="doc.dir" location="doc"/>
+  <property name="dest.dir" location="dest"/>
+
+  
+  <path id="classpath.test">
+    <pathelement location="lib/junit-4.12.jar"/>
+    <pathelement location="lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${build.dir}"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dest.dir}"/>
+    <delete dir="${doc.dir}"/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dest.dir}"/>
+    <mkdir dir="${doc.dir}"/>
+  </target>
+
+  <target name="compile-test" depends="clean">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" encoding="ISO8859-2">
+       <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+
+  <target name="run-test" depends="compile-test">
+    <junit printsummary="on" haltonfailure="yes" fork="true">
+        <classpath>
+          <path refid="classpath.test"/>
+          <pathelement location="${build.dir}"/>
+        </classpath>
+        <formatter type="brief" usefile="false" />
+        <batchtest>
+            <fileset dir="${src.dir}" includes="**/*Test.java" />
+        </batchtest>
+    </junit>
+  </target>
+
+  <target name="compile" depends="clean">
+    <exec executable="/bin/bash">
+      <arg value="lib/get-libs.sh"/>
+    </exec>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dest.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" encoding="ISO8859-2">
+      <exclude name="model/HomeWork3Test.java"/>
+    </javac>
+    <jar destfile="${dest.dir}/solitaire.jar" basedir="${build.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="model.Solitaire"/>
+      </manifest>
+      <fileset dir="${lib.dir}">
+	<include name="*"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="run" depends="compile">
+    <java jar="${dest.dir}/solitaire.jar" fork="true"/>
+  </target>
+
+  <target name="doc">
+    <mkdir dir="${doc.dir}"/>   
+    <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
+  </target>
+
+
+</project>

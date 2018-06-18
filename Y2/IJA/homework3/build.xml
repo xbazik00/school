@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project name="Solitaire" default="compile" basedir=".">
+
+  <description>IJA projekt: Solitaire</description>
+
+  <property name="src.dir" location="src"/>
+  <property name="build.dir" location="build"/>
+  <property name="lib.dir" location="lib"/>
+  <property name="doc.dir" location="doc"/>
+  
+  <path id="classpath.test">
+    <pathelement location="lib/junit-4.12.jar"/>
+    <pathelement location="lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${build.dir}"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="compile" depends="clean">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" encoding="ISO8859-2">
+       <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+
+  <target name="run" depends="compile">
+    <junit printsummary="on" haltonfailure="yes" fork="true">
+        <classpath>
+          <path refid="classpath.test"/>
+          <pathelement location="${build.dir}"/>
+        </classpath>
+        <formatter type="brief" usefile="false" />
+        <batchtest>
+            <fileset dir="${src.dir}" includes="**/*Test.java" />
+        </batchtest>
+    </junit>
+  </target>
+
+  <target name="doc">
+    <mkdir dir="${doc.dir}"/>   
+    <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
+  </target>
+
+
+</project>
