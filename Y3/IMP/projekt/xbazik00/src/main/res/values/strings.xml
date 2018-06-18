@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Thermometer v2.0</string>
+    <string name="temp_default">Temperature</string>
+    <string name="button_send">Read temperature</string>
+</resources>

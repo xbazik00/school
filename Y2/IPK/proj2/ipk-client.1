@@ -1,0 +1,33 @@
+.TH IPK-CLIENT 1 2017-04-11 FIT
+.SH NAME
+ipk-client \- mathematical network client
+.SH SYNOPSIS
+.B ipk-client 
+ip_address
+.SH DESCRIPTION
+.B ipk-client
+evaluates mathematical operations given by the server that is identified by ip_address parameter. It can be either ipv4 or ipv6. Version of IP protocol is chosen automatically depending on inet_aton() and inet_pton() functions. When the IP protocol is all set up, the corresponding socket is created and tries to connect to the selected server. If the socket is successfully created TCP connecion is established. 
+
+The first message that is sent by the client is in the form of "HELLO [MD5 hash of login]". MD5 implementation is used from library <openssl/md5.h>. The hash for the given user is implemented in function create_hello(). Mathematical message from the server is defiend by the following format "SOLVE [number] [+|-|*|/] [number]", where number is a long long integer. Format of the answer is "RESULT [number]", where number is a floating point number with 2 decimal places, in case of an error the answer is "RESULT ERROR". The possible errors are either number overflow or division by zero. The server ends communication by sending the message "BYE [secret]" and secret is printed on the standard output. Each message ends with a new line character '\\n' as a delimiter. If the message does not satisfy any of the given formats, the message is not taken into consideration.
+
+The client uses the port 55555.
+.SH DIAGNOSTICS
+The following diagnostics may be issued on stderr:
+
+.B Connection was not established.
+.RS
+Client cannot connect to the given server because server is not reachable or socket was not created correctly.
+
+.RE
+.B Invalid combination of parameters.
+.RS
+Parameters were not put in correctly.
+.RE
+
+.B Request was not sent.
+.RS
+Message was not sent (internal error).
+.SH EXIT STATUS
+Exit status is 0 if command was successful. If thw incorrect combination of parameters was given exit status is 1. In case the connection was not established, the exit status is 2 ,and when message could not be sent, the exit status is 3.
+.SH AUTHOR
+xbazik00 <xbazik00@stud.fit.vutbr.cz>

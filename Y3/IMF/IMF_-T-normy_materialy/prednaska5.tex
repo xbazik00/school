@@ -1,0 +1,1212 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[latin2]{inputenc}
+\usepackage[slovak]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\newcommand{\ml}{l\kern-0.035cm\char39\kern-0.03cm}
+\newcommand{\mt}{t\kern-0.035cm\char39\kern-0.03cm}
+\newcommand{\md}{d\kern-0.035cm\char39\kern-0.03cm}
+
+\sloppy
+
+
+
+\begin{document}
+
+\centerline{\Large\sc Triangulárne normy}
+
+{\bf Definícia a základné vlastnosti triangulárnych noriem}
+\bigskip
+
+
+
+V¹imnime si takúto úlohu:\\
+{\bf Pr\'iklad.} V~chlapèenskej triede je $60\%$ hokejistov a $80\%$ futbalistov.
+Minimálne ko\ml{}ko percent chlapcov hrá súèasne aj hokej aj
+futbal?
+
+Zrejme najèastej¹ie a zároveò aj najnázornej¹ie rie¹enie nám
+poskytujú Vennove diagramy:
+$$
+\includegraphics[width=6cm]{ven1}
+$$
+
+Na¹e rie¹enie mô¾eme zapísa\mt{} aj takto:
+$$p=(h+f-100)\%,$$
+prièom $h, f$ sú percentá hokejistov a futbalistov a $p$ nám dáva odpove\md{} na
+na¹u otázku. Toto v¹ak nie je v¹eobecné rie¹enie, o~èom sa mô¾eme presvedèi\mt{}
+v~nasledujúcej úlohe, ktorá je len èíselnou modifikáciou úvodnej úlohy:
+
+{\bf Pr\'iklad.} V~chlapèenskej triede je $30\%$ hokejistov a $40\%$ futbalistov. 
+Minimálne ko\ml{}ko percent chlapcov hrá súèasne aj hokej aj
+futbal?
+
+Opä\mt{} nám rie¹enie poskytujú Vennove diagramy:
+$$
+\includegraphics[width=6cm]{ven2}
+$$
+
+Teraz u¾ nebude problém prepísa\mt{} rie¹enie pomocou funkcie
+dvoch premenných $P:~[0,100]^2\rightarrow [0,100]$, ke\md{} prvá premenná
+bude udáva\mt{} percento hokejistov a druhá premenná  percento
+futbalistov.
+Potom
+$$P(x,y)=\max\{0,x+y-100\}\%,$$
+teda poradie premenných nie je dôle¾ité  {\em (komutatívnos\mt{})}. Navy¹e, ak jedna
+z~premenných je $100\%$, tak hodnota $P$ je toto¾ná s~hodnotou zvy¹nej
+premennej {\em (jednotkový prvok)}.
+
+Skúsme túto úlohu trochu pozmeni\mt{}:\\
+{\bf Pr\'iklad.} V~chlapèenskej triede je $60\%$ hokejistov, $80\%$ futbalistov a
+$75\%$ karatistov.\\
+ a) Minimálne ko\ml{}ko percent chlapcov sa venuje súèasne v¹etkým trom
+¹portom?\\
+ b) Minimálne ko\ml{}ko percent  chlapcov sa zároveò venuje aj futbalu aj
+karate?
+
+Opä\mt{} pou¾ijeme Vennove diagramy: 
+$$
+\includegraphics[width=6cm]{ven3}
+$$
+ Rie¹enie èasti a) teda mô¾eme zapísa\mt{} pomocou funkcie troch premenných
+$P':[0,100]^3\rightarrow[0,100]$, prièom jednotlivé premenné
+predstavujú  percentá futbalistov, hokejistov a karatistov:
+$$P'(x,y,z)=\max\{0,x+y+z-200\}\%,$$
+zrejme
+$$P'(x,y,z)=P(P(x,y),z)=P(x,P(y,z)),$$
+rie¹enie opä\mt{} mô¾eme vyjadri\mt{} pomocou funkcie dvoch premenných
+{\it(asociatívnos\mt{})}.
+Èas\mt{} b) rie¹ime tak ako pôvodnú úlohu. Ke\md{} porovnáme výsledok èasti $b)$ s~výsledkom pôvodnej úlohy, tak
+zistíme, ¾e
+$$ \text{ak  } y \leq z, \text{tak  } P(x,y) \leq P(x,z),$$
+ke\md{} $x, y, z$ sú  percentá v~uvedenom poradí {\it(monotónnos\mt{})}.\\
+Tieto jednoduché úlohy nás priviedli k~¹peciálnej skupine
+funkcií, ktoré sú komutatívne, asociatívne, monotónne a ich
+maximálna hodnota je súèasne aj jednotkovým prvkom.
+Funkcie s~týmito vlastnos\mt{}ami, definované na jednotkovom ¹tvorci
+$[0,1]^2$, zaviedli Schweizer a Sklar takto:
+
+{\bf Defin\'icia.}{\em Triangulárna norma} {\em (t-norma)} je
+binárna operácia na jednotkovom intervale $[0,1]$, t.j. funkcia $T:[0,1]^2
+\rightarrow [0,1]$ taká, ¾e pre ka¾dé $x,y,z \in [0,1]$
+sú splnené nasledujúce axiómy:
+\begin{itemize}
+\item (T1) {\em Komutatívnos\mt{}}
+$$T(x,y)=T(y,x)$$
+\item (T2) {\em Asociatívnos\mt{}}
+$$T(x,T(y,z))=T(T(x,y),z)$$
+\item (T3) {\em Monotónnos\mt{}}
+$$ ak \hskip 2mm y\le z, \hskip 2mm tak \hskip 2mm T(x,y)\le T(x,z)$$
+\item (T4) {\em Okrajová podmienka}
+$$T(x,1)=x.$$
+\end{itemize}
+
+{\bf Pozn\'amka} Zaèiatky problematiky t-noriem sa spájajú s funkcionálnymi
+rovnicami a slávnym matematikom N.H.Abelom. 
+
+Pre nadobudnutie lep¹ej predstavy o~t-normách uvádzame nasledujúce
+dva príklady. Prvý z~nich ukazuje nezávislos\mt{} axióm (T1)-(T4) a
+druhý prezentuje základné a zároveò aj najznámej¹ie t-normy.
+
+{\bf Pr\'iklad}~
+
+\begin{itemize}
+\item  Funkcia $ F_1:[0,1]^2 \rightarrow [0,1]$ daná predpisom
+$$F_1(x,y)=x,$$
+spåòa (T2), (T3) a (T4), ale nespåòa (T1).
+\item  Funkcia $ F_2:[0,1]^2 \rightarrow [0,1]$ daná predpisom
+$$F_2(x,y)=x.y.\max(x,y),$$
+spåòa (T1), (T3) a (T4), ale nespåòa (T2).
+\item  Funkcia $ F_3:[0,1]^2 \rightarrow [0,1]$ daná predpisom
+$$F_3(x,y)=\begin{cases} 0.5, &\mbox {ak $(x,y) \in ]0,1[^2$,} \\
+\min(x,y), &\mbox {inak,}\end{cases}$$
+spåòa (T1), (T2) a (T4), ale nespåòa (T3).
+\item  Funkcia $ F_4:[0,1]^2 \rightarrow [0,1]$ daná predpisom
+$$ F_4(x,y)= \frac 12,$$
+spåòa (T1), (T2) a (T3), ale nespåòa (T4).
+\end{itemize}
+
+
+Základné ¹tyri t-normy sú:
+\begin{itemize}
+\item  {\em Minimová t-norma} $T_M :[0,1]^2 \rightarrow [0,1]$
+$$ T_M(x,y)=\min(x,y).$$
+$$
+\includegraphics[width=8cm]{min}
+$$
+\item  {\em Súèinová t-norma} $T_P :[0,1]^2 \rightarrow [0,1]$
+$$ T_P(x,y)=x.y.$$
+$$
+\includegraphics[width=8cm]{prod}
+$$
+ \item  {\em \L{}ukasiewiczova t-norma} $T_L :[0,1]^2 \rightarrow [0,1]$
+$$ T_L(x,y)=\max(x+y-1,0).$$
+$$
+\includegraphics[width=8cm]{luka}
+$$
+\item  {\em Drastický súèin} $T_D :[0,1]^2 \rightarrow [0,1]$
+$$ T_D(x,y)=\begin{cases} \min(x,y),  &\mbox {ak
+$\max(x,y)=1,$} \\0,  &\mbox
+{inak.}\end{cases}$$
+$$
+\includegraphics[width=8cm]{drastic}
+$$
+\end{itemize}
+
+{\bf Pozn\'amka.}
+ V¹imnime si, ¾e \L{}ukasiewiczova t-norma
+je vlastne na¹a funkcia $P$ z~úvodnej úlohy, ale definovaná na
+jednotkovom ¹tvorci $[0,1]^2$.
+
+
+{\bf Pozn\'amka.}
+ Zrejme pre ka¾dú t-normu $T$ platí
+$$ T(1,x)=T(x,1)=x,$$
+$$ T(0,x)=T(x,0)=0.$$
+
+Vzh\ml{}adom na to, ¾e t-normy sú funkcie dvoch premenných, 
+mô¾eme ich zvyèajným spôsobom porovnáva\mt{}.
+
+{\bf Defin\'icia}~
+\begin{itemize}
+\item  Ak pre t-normy $T_1$ a $T_2$ je
+pre ka¾dý bod $(x,y) \in [0,1]^2$ splnená nerovnos\mt{}
+$T_1(x,y) \leq T_2(x,y),$ hovoríme, ¾e $T_1$ je {\em slab¹ia} ako $T_2$,
+alebo $T_2$ je {\em silnej¹ia} ako $T_1$ a pí¹eme $T_1\leq T_2$.
+\item  Ak pre t-normy $T_1$ a $T_2$ platí, ¾e $T_1 \leq T_2$ a
+$T_1 \ne T_2,$ t.j. ak $T_1 \leq T_2$, ale $T_1(x_0,y_0) <
+T_2(x_0,y_0)$ pre nejaký bod $(x_0,y_0) \in [0,1]^2$, tak $T_1<T_2$.
+\end{itemize}
+
+{\bf Pozn\'amka.}
+\begin{itemize}
+\item V¹imnime si, ¾e pre \ml{}ubovo\ml{}nú t-normu $T$ a pre ka¾dé $a \in [0,1]$ platí $T(a,a)\leq
+a.$ 
+\item Význaèné sú tie prvky, pre ktoré platí $T(a,a)=a.$ Nazývame ich
+{\em idempotentné prvky t-normy} $T.$ Zrejme pre \ml{}ubovo\ml{}nú t-normu sú 0 a 1
+idempotentné prvky. Preto ich nazývame {\em triviálnymi idempotentnými
+prvkami.}
+\item Postupným aplikovaním axióm (T3) a (T4) zistíme, ¾e minimová t-norma
+je najsilnej¹ia a drastický súèin je naj\-slab¹ia
+t-norma, teda pre \ml{}ubovo\ml{}nú t-normu $T$ platí:
+$$T_D \leq T \leq T_M.$$
+\item  Pre spomínané základné t-normy platí takéto
+usporiadanie:
+$$T_D < T_L < T_P < T_M.$$
+\end{itemize}
+
+Pre minimovú t-normu platí nasledujúca vlastnos\mt{}.\\
+{\bf Veta.} (Klement, Mesiar, Pap)
+Minimová t-norma je jediná, pre ktorú je ka¾dý jej prvok $a \in [0,1]$
+idempotentný, t.j.
+$$( \forall a \in [0,1]: T(a,a)=a) \iff T=T_M.$$
+
+
+
+Asociatívnos\mt{} nám umo¾òuje jednoznaène roz¹íri\mt{} ka¾dú t-normu $T$ na
+$n-$árnu
+operáciu na jednotkovom intervale. Kvôli jednoduchosti zavedieme
+takéto oznaèenie:
+\medskip
+
+{\bf Defin\'icia.}
+ Ak $T$ je t-norma, $x \in [0,1]$ a $n \in
+N$, tak
+$$ x_T^{(n)}=\begin{cases} x, &\mbox {ak $n=1,$} \\ {T(x,x_T^{(n-1)})},
+&\mbox {ak $n>1.$}\end{cases}$$
+
+Jednou z~dôle¾itých vlastností, ktorá nás pri funkciách èasto
+zaujíma, je spojitos\mt{}. Spojitos\mt{} t-noriem máme definovanú nasledovne:
+
+
+{\bf Defin\'icia.}
+Hovoríme, ¾e t-norma $T$ je {\em spojitá}, ak funkcia $ T:[0,1]^2
+\rightarrow [0,1]$ je  spojitá v~ka¾dom bode $(x,y) \in [0,1]^2$.
+
+Z~axióm (T1) a (T3) vyplýva pre spojitos\mt{} t-noriem nasledujúce
+tvrdenie.
+
+{\bf Veta.}  (Klement, Mesiar, Pap) Triangulárna norma je spojitá práve vtedy, ke\md{} je
+spojitá v~prvej súradnici, t.j. pre ka¾dé $y \in [0,1]$ je funkcia
+jednej premennej$$T(.,y):[0,1]^2 \rightarrow [0,1] $$
+spojitá.
+
+V mnohých prípadoch postaèuje pracova\mt{} so slab¹ími formami spojitosti. V
+prípade t-noriem sa jedná o spojitos\mt{} z\ml{}ava (sprava).  
+
+{\bf Defin\'icia.}
+Hovoríme, ¾e t-norma $T$ je {\em  spojitá z\ml{}ava (resp. sprava)}, ak pre ka¾dé
+$y \in [0,1]$ a pre \ml{}ubovo\ml{}nú neklesajúcu (resp. nerastúcu)
+postupnos\mt{} $(x_n)_{n \in N}$ platí
+$$\lim\limits_{n \to \infty} T(x_n,y)=T(\lim\limits_{n \to \infty} x_n,y).$$
+
+V\md{}aka monotónnosti
+a komutatívnosti t-noriem, pre tento typ spojitosti platí nasledujúce
+tvrdenie.
+
+{\bf Veta.}(Klement, Mesiar, Pap)
+Triangulárna norma je {\em spojitá z\ml{}ava (resp. sprava)} práve vtedy, ke\md{} je spojitá
+z\ml{}ava ( resp. sprava) v~prvej súradnici, t.j. ak pre ka¾dé $y \in [0,1]$ a pre
+ka¾dú postupnos\mt{} $(x_n)_{n \in N}\in [0,1]^N$ platí
+$$\sup T(x_n,y)=T(\sup x_n,y),$$
+resp.
+$$\left (\inf T(x_n,y)=T(\inf x_n,y) \right ).$$
+
+{\bf Pr\'iklad.}
+Zrejme $T_M, T_P, T_L$ sú spojité t-normy, ale $T_D$ nie je spojitá
+t-norma (ale je spojitá sprava). Ïalej, napr. t-norma, daná predpisom:
+$$ T_{a,\lambda}^{\Delta}(x,y)=\begin{cases} 0, &\mbox {ak $x+y \leq 1+a$ a
+$\max(x,y)<1,$} \\ \lambda, &\text {ak $x+y > 1+a$ a $\max(x,y)<1,$} \\
+\min (x,y), &\mbox {inak.} \end{cases} $$
+kde $a \in  ]0,1[, \lambda \in  ]0,a[$, nie je spojitá (ani sprava,
+ani z\ml{}ava).
+
+\bigskip
+
+{\bf Algebraické vlastnosti t-noriem}
+
+
+
+\bigskip
+
+Ka¾dú úseèku då¾ky $b$ vieme pokry\mt{} nejakým poètom úseèiek danej
+då¾ky $a > 0$. Toto tvrdenie mô¾eme zapísa\mt{} aj takto: pre \ml{}ubovo\ml{}né dve
+kladné reálne èísla $a, b$ existuje prirodzené èíslo $n$ také, ¾e
+$a.n > b$, èo je známa archimedovská vlastnos\mt{} reálnej osi
+vzh\ml{}adom na sèítanie. Podobne je definovaná aj archimedovská
+vlastnos\mt{} pre násobenie na intervale $]0,1[$: pre \ml{}ubovo\ml{}né dve
+reálne èísla $a, b$ z~intervalu $]0,1[$ existuje prirodzené èíslo
+$n$ také, ¾e $a^n < b$. Archimedovská vlastnos\mt{} pre
+t-normy bola zavedená takto:
+
+{\bf Defin\'icia.}
+Hovoríme, ¾e t-norma $T$ je {\em archimedovská,} ak pre v¹etky body
+$(x,y) \in ]0,1[^2$ existuje $n \in N$ také, ¾e
+$$ x_T^{(n)} < y.$$
+
+\vskip 3mm
+{\bf Pr\'iklad}
+Vyjadrime $x_T^{(n)}, ~x \in ]0,1[$ pre základné ¹tyri t-normy $T_M, T_P, T_L, T_D:$
+$$x_{T_M}^{(n)}=x, \hskip 3mm x_{T_P}^{(n)}= x^n, \hskip 3mm
+x_{T_L}^{(n)}=
+\max\{0, nx-n+1\}, \hskip 3mm
+x_{T_D}^{(n)}=x.\chi_{\{1\}}(n).$$
+Aplikovaním predchádzajúcej definície zistíme, ¾e t-normy $T_P, T_L,
+T_D$ sú archimedovské, ale $T_M$ nie je archimedovská. Aj t-norma $T=
+T_{a,\lambda}^{\Delta}$ z príkladu 2.1.12. je archimedovská, nako\ml{}ko
+$x^{(3)}_T=0$ pre v¹etky $x \in ]0,1[.$
+
+Pri overovaní archimedovskej vlastnosti èasto vyu¾ívame nasledujúce
+tvrdenia:
+
+{\bf Veta.}  (Klement, Mesiar, Pap)
+Triangulárna norma T je archimedovská práve vtedy, ke\md{} pre ka¾dé $x \in ]0,1[$
+je $$ \lim \limits_{n \rightarrow \infty} {x^{(n)}_T} = 0.$$
+
+
+{\bf Veta.}  (Klement, Mesiar, Pap)
+\begin{itemize}
+\item Ak t-norma $T$ je archimedovská, tak pre ka¾dé $x
+\in \hskip 1mm ]0,1[$ \hskip 1mm platí \hskip 1mm $ T(x,x) <~x$.
+\item  Ak je t-norma $T$ spojitá sprava, potom je
+archimedovská práve vtedy, ke\md{} pre ka¾dé $ x \in \hskip 1mm ]0,1[$ \hskip 1mm platí \hskip 1mm $
+T(x,x) < x$.
+\end{itemize}
+
+Poznamenajme, ¾e na základe predchádzajúceho tvrdenia sa èasto v literatúre
+definuje archimedovskos\mt{} spojitých t-noriem pomocou diagonálnej nerovnosti
+$$T(x,x)<x, \text{   pre  } x \in ]0,1[.$$
+
+Teraz si budeme v¹íma\mt{} \md{}al¹ie algebraické vlastnosti t-noriem.
+Dôle¾itá vlastnos\mt{} funkcií je monotónnos\mt{}. Pri t-normách rozli¹ujeme
+nieko\ml{}ko typov monotónnosti:
+
+{\bf Defin\'icia.}
+\begin{itemize}
+\item  Hovoríme, ¾e t-norma $T$ je {\em striktne
+monotónna}, ak
+je rastúca na $]0,1]^2$ ako funkcia $ T:[0,1]^2 \rightarrow [0,1]$ alebo
+ekvivaletne,
+$$ \text {ak} \hskip 3mm x \in \hskip 1mm ]0,1] \hskip 3mm \text{a} \hskip 3mm y < z, \hskip 3mm \text {tak} \hskip 3mm T(x,y) < T(x,z). $$
+\item  Hovoríme, ¾e t-norma $T$ je {\em zdru¾ene striktne
+monotónna}, ak platí:
+$$ \text{ak} \hskip 3mm  x < x'\hskip 3mm \text{a} \hskip 3mm y<y',
+\hskip 3mm  \text{tak} \hskip 3mm   T(x,y)<T(x',y').$$
+\item  Hovoríme, ¾e t-norma $T$ je {\em striktná}, ak je
+spojitá a striktne monotónna.
+\end{itemize}
+
+O~vz\mt{}ahoch medzi jednotlivými typmi monotónnosti sa viac dozvieme
+z~nasledujúcej vety a príkladu:
+
+{\bf Veta.}  (Klement, Mesiar, Pap)
+\begin{itemize}
+\item Triangulárna norma T je striktne monotónna práve vtedy, ke\md{} platí zákon
+o~krátení, t.j. ak $T(x,y)=T(x,z)$  a  $x>0$, tak $y=z.$
+\item  Ak je t-norma T striktne monotónna, potom je aj
+zdru¾ene striktne monotónna.
+\end{itemize}
+
+{\bf Pr\'iklad.}
+\begin{itemize}
+\item  \L{}ukasiewiczova t-norma je spojitá,
+ale nie je striktne monotónna, ani zdru¾ene striktne monotónna.
+\item  Triangulárna norma $T,$ definovaná takto
+    $$ T(x,y)= \begin{cases} \frac {xy}2, &\mbox {ak $\max(x,y)<1,$} \\ xy,
+    &\mbox {inak,} \end{cases} $$
+je striktne monotónna, ale nie je spojitá.
+\item  Súèinová t-norma $T_P$ ako jediná z~uvedených
+¹tyroch základných je aj spojitá, aj striktne monotónna, teda je
+striktná.
+\item  Minimová t-norma $T_M$ je spojitá a zdru¾ene striktne
+monotónna (ale nie je striktne monotónna).
+\end{itemize}
+
+V~teórii pologrúp je dôle¾itým pojmom {\em delite\ml{} nuly}.
+Pre  t-normy definujeme tento pojem takto:
+
+{\bf Defin\'icia.}
+Prvok $x \in ]0,1[$ nazveme {\em delite\ml{} nuly} danej t-normy $T$, ak
+existuje $y \in ]0,1[$ také, ¾e $T(x,y) = 0.$\\
+Hovoríme, ¾e $x \in ]0,1[$ je {\em nilpotentný prvok danej t-normy $T$}, ak existuje $n \in N$ také,
+¾e $ x_T^{(n)} =0.$
+
+{\bf Pozn\'amka.} Triangulárna norma bez delite\ml{}ov nuly sa nazýva {\em
+pozitívna.}
+
+{\bf Pr\'iklad}
+ Opä\mt{} sa zamerajme na ¹tyri základné
+t-normy. Zrejme $T_P, T_M $ nemajú ani delite\ml{}a nuly, ani
+nilpotentné prvky. Naopak, ka¾dé $x \in ]0,1[$ je delite\ml{}om nuly a
+zároveò aj nilpotentným prvkom $T_D, T_L$.
+
+
+Ïal¹iu ¹peciálnu triedu t-noriem charakterizujú práve nilpotentné
+prvky a spojitos\mt{}:
+
+{\bf Defin\'icia.}
+Hovoríme, ¾e t-norma $T$ je {\em nilpotentná}, ak je spojitá a ka¾dé $x
+\in ]0,1[$ je jej nilpotentným prvkom.
+
+Nilpotentné a striktné t-normy  sú archimedovské a spojité. Ich vz\mt{}ah je vyjadrený takto:
+
+{\bf Veta.}  (Klement, Mesiar, Pap)
+Nech T je spojitá archimedovská t-norma. Potom nasledujúce tvrdenia
+sú ekvivalentné :
+\begin{itemize}
+\item T je nilpotentná.
+\item  Existuje aspoò jeden nilpotentný prvok danej
+t-normy T.
+\item T nie je striktná.
+\item  T má delite\ml{}a nuly.
+\end{itemize}
+
+{\bf Pozn\'amka.}
+Typickou predstavite\ml{}kou nilpotentných t-noriem je \L{}ukasiewiczova
+t-norma, navy¹e v¹etky nilpotentné t-normy sú s~òou izomorfné.
+Naopak, súèinová t-norma je najznámej¹ia striktná t-norma. V nasledujúcich
+kapitolách sa s nimi e¹te stretneme, majú toti¾ významné postavenie pri
+kon¹trukciách nilpotentných a striktných t-noriem. 
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Uva\v zujme zobrazenie $f:X \to Y, y=f(x).$
+\begin{itemize}
+\item Ak $A$ je klasick\'a podmno\v zina univerza $X$, tak jej obraz v zobrazen\'i $f$ je mno\v zina $f(A)= \{y \in Y; \exists x \in A; f(x)=y\}.$
+\item Ak $A$ je fuzzy podmno\v zina univerza $X$, tak pozn\'ame len stupne pr\'islu\v snosti jednotliv\'ych prvkov $x$ do mno\v ziny $A$. Preto aj prvky $y=f(x)$ bud\'u patri\v t do obrazovej mn\v ziny len v nejakom stupni. Teda obrazom fuzzy mno\v ziny bude znovu fuzzy mno\v zina a stupne pr\'islu\v snosti sa bud\'u prira\v dova\v t nasledovne:
+\begin{itemize}
+\item Ak pre prvok $y \in Y$ existuje jedin\'e tak\'e $x$, \v ze $f(x)=y$, tak obrazu $y$ prirad\'ime rovnak\'u pr\'islu\v snos\v t do mno\v ziny $B$, ako pr\'islu\v snos\v t vzoru $x$ do mno\v ziny $A$, teda $\mu_B(y)=\mu_A(x).$
+\item Ak  pre prvok $y \in Y$ existuje viac tak\'ych $x$, \v ze $f(x)=y$, tak obrazu $y$ prirad\'ime maximum z pr\'islu\v snost\'i jeho vzorov do mno\v ziny $A$. Vo v\v seobecnosti uva\v zujeme namiesto maxima supremum.
+\item Ak prvok $y$ nem\'a vzor, tak $\mu_B(y)=0.$
+\end{itemize}
+\end{itemize} 
+
+
+Uva\v zujme zobrazenie $f:X \to Y; y = f(x)$ tak\'e, \v ze mno\v zina vzorov $f^{-1}\left(\{y\}\right)$ je v\v zdy kone\v cn\'a. Pre fuzzy mno\v zinu $A \in F(X)$ vytvorme jej horizont\'alnu reprezent\'aciu 
+$\left( A^{(\alpha)}\right)_{\alpha \in \left( 0,1\right\rangle}.$ V\v setky $\alpha-$ rezy $A^{(\alpha)}$ s\'u ostr\'e mno\v ziny a preto ich obraz v zobrazen\'i je
+$$f\left(A^{(\alpha)}\right)=\{y \in Y; \exists x \in A^{(\alpha)}; y =f(x)\}.$$
+Uk\'a\v zte, \v ze syst\'em 
+$f\left(A^{(\alpha)}\right)_{\alpha \in \left( 0,1\right\rangle}$ je za na\v sich predpokladov syst\'em $\alpha-$rezov nejakej fuzzy mno\v ziny.
+
+{\bf Pr\'iklady}
+\begin{itemize}
+\item Nech $A$ je fuzzy podmno\v zina univerza cel\'ych \v c\'isel $Z,$
+$$A=\{0.2/-1,0.3/0,0.6/1,0.4/2\}.$$
+Ur\v te fuzzy mno\v zinu $A^2.$
+
+\item Nech $A$ je fuzzy podmno\v zina univerza re\'alnych \v c\'isel $R,$
+$$\mu_A=\begin{cases}
+x & \mbox{ak } x \in \langle 0,1 \rangle\\
+2-x & \mbox{ak } x \in \left( 1,2 \right\rangle\\
+0 & \mbox{pre ostatn\'e  } x \in R.
+\end{cases}$$
+Ur\v cte hodnotu roz\v s\'irenia exponenci\'alnej funkcie $\exp(A)=e^{A}.$
+
+\end{itemize} 
+
+
+
+
+
+
+
+
+\centerline{\Large\sc Princ\'ip roz\v s\'irenia pre zobrazenia viac premenn\'ych }
+\bigskip
+
+Nech $f: X\times Y \to U, u = f(x,y). $ Potom $f(A,B)=\{f(x,y); x \in A, y \in B\}=f(A\times B).$ 
+
+Nech $\overline{f}$ pracuje s fuzzy podmno\v zinami. 
+Potom fuzzy podmno\v zin\'am $A, B$ prirad\'ime fuzzy podmno\v zinu $C$, pre ktor\'u plat\'i:
+$$\mu_C(u)=\sup\limits_{u=f(x,y)}\mu_{A\times B}(x,y)$$
+teda
+$$\mu_C(u)=\sup\limits_{u=f(x,y)}\min(\mu_{A}(x),\mu_B(y))$$
+
+To znamen\'a, \v ze ak m\'a prvok $u \in U$ viac vzorov, prirad\'ime mu tak\'y stupe\v n pr\'islu\v snosti do obrazovej  mno\v ziny, ktor\'y je rovn\'y maxm\'alnemu stup\v nu pr\'islu\v snosti t\'ych dvoj\'ic z $A \times B$, ktor\'e sa na\v n zobrazia.
+\end{document}
+\Large\sc \v Standardn\'e oper\'acie.} 
+
+
+{\bf Defin\'icia.}
+Nech $X$ je z\'akladn\'y priestor $A, B \in F(X)$.
+\begin{itemize}
+\item {\bf \v Standardn\'y prienik fuzzy mno\v z\'in} $A, B$ je fuzzy mno\v zina  $A \cap B \in F(X) $ s funkciou pr\'islu\v snosti:
+$$\mu_{A \cap B}(x)=\min\left(\mu_A(x), \mu_B(x)\right).$$
+\item {\bf \v Standardn\'e zjednotenie fuzzy mno\v z\'in} $A, B$ je fuzzy mno\v zina  $A \cup B \in F(X) $ s funkciou pr\'islu\v snosti:
+$$\mu_{A \cup B}(x)=\max\left(\mu_A(x), \mu_B(x)\right).$$
+\item {\bf \v Standardn\'ym doplnkom fuzzy mno\v ziny} $A$ je fuzzy mno\v zina  
+$\bar{A} \in F(X) $ s funkciou pr\'islu\v snosti:
+$$\mu_{\bar{A}}(x)=1-\mu_A(x).$$
+
+\end{itemize}
+
+\bigskip
+
+{\Large\sc Pr\'iklady.}
+
+\bigskip
+
+\begin{itemize}
+\item Nech $X=\left\langle 0, \infty \right)$ a nech $A, B \in F(X)$
+$$A=\{0.2/-1,0.4/0,0.7/1,0.3/2\}, ~~~ B=\{0.5/-1,0.4/0, 0.4/1,0.8/2\}.$$
+Ur\v cte $A \cap B, A \cup B, \bar{A}$
+\item Nech $X=\{-1,0,1,2\}$ a nech $A, B \in F(X)$
+$$\mu_A= \begin{cases} \frac 12(2-x) & x \in \left\langle 0,2 \right\rangle\\
+0 & inde, \end{cases}
+~~~ \mu_B = \begin{cases} \frac 12x & x \in \left\langle 0,2 \right\rangle\\
+(3-x) & x \in \left( 2,3 \right\rangle\\
+0 & inde. \end{cases}$$
+Ur\v cte $A \cap B, A \cup B, \bar{A}, \bar{B}$
+\end{itemize}
+
+
+ 
+\newpage
+
+{\Large\sc  Vlastnosti \v standardn\'ych oper\'aci\'i s fuzzy mno\v zinami}
+
+Vieme, \v ze pre klasick\'e mno\v ziny platia nasleduj\'uce vlastnosti:
+
+\begin{itemize}
+\item Komutat\'ivnos\v t \begin{itemize}
+\item $A \cap B=B\cap A$
+\item $A \cup B=B\cup A$
+
+\end{itemize}
+
+\item Asociat\'ivnos\v t
+\begin{itemize}
+\item $A \cap \left(B \cap C\right)=\left( A \cap B\right)\cap C$
+\item $A \cup \left(B \cup C\right)=\left( A \cup B\right)\cup C$
+\end{itemize}
+
+\item Distribut\'ivnos\v t
+\begin{itemize}
+\item $A \cap \left(B \cup C\right)=\left( A \cap B\right)\cup \left( A\cap C\right)$
+\item $A \cup \left(B \cap C\right)=\left( A \cup B\right)\cap \left( A\cup C\right)$
+\end{itemize}
+
+\item Idempotencia
+\begin{itemize}
+\item $A \cap A= A$
+\item $A \cup A= A$
+
+\end{itemize}
+\item Absorbcia
+\begin{itemize}
+\item $A \cap \left(A \cup B\right)= A$
+\item $A \cup \left(A \cap B\right)= A$
+
+\end{itemize}
+\item Absorbcia $X$ a $\emptyset$
+\begin{itemize}
+\item $A \cap \emptyset= \emptyset$
+\item $A \cup X= X$
+
+\end{itemize}
+
+\item Identita
+\begin{itemize}
+\item $A \cap X= A$
+\item $A \cup \emptyset= A$
+
+\end{itemize}
+
+\item Involut\'ivnos\v t
+\begin{itemize}
+\item $\bar{\bar{A}}=A$
+\end{itemize}
+\item Z\'akon sporu
+\begin{itemize}
+\item $A \cap \bar{A}= \emptyset$
+\end{itemize}
+\item Z\'akon vyl\'u\v cenia tretieho
+\begin{itemize}
+\item $A \cup \bar{A}= X$
+\end{itemize}
+\item De Morganove z\'akony
+\begin{itemize}
+\item $\overline{A\cap B} = \bar{A} \cup \bar{B}$
+\item $\overline{A \cup B} = \bar{A} \cap \bar{B}$
+
+\end{itemize}
+
+\end{itemize}
+
+\bigskip
+
+{\Large\sc D\^ okazy}
+
+\bigskip
+
+Zistite, ktor\'e z uveden\'ych vlastnost\'i platia pre \v standardn\'e oper\'acie  na fuzzy mno\v zin\'ach. 
+
+\bigskip
+
+{\Large\sc $\alpha$ - rezy fuzzy mno\v z\'in}
+
+\bigskip
+
+{\bf Defin\'icia.} Nech $A$ je fuzzy podmno\v zina univerza $X$ a nech $\alpha \in \left\langle 0,1 \right\rangle$. $\alpha$- rezom fuzzy mno\v ziny $A$ sa naz\'yva mno\v zina 
+$$A^{(\alpha)}=\{x \in X; \mu_A(x)\geq \alpha\}.$$
+Zrejme $Ker(A)=A^{(1)}, A^{(0)}=X.$
+Ka\v zdej fuzzy mno\v zine vieme priradi\v t syst\'em $\alpha-$ rezov, \v ci\v ze syst\'em ost\'ych mno\v z\'in. Teda fuzzy mno\v zina sa d\'a rozlo\v zi\v t na syst\'em ostr\'ych mno\v z\'in-dekompoz\'icia fuzzy mno\v ziny.
+
+\bigskip
+
+{\bf Reprezent\'acia fuzzy mno\v z\'in:}
+\begin{itemize}
+\item {\bf horizont\'alna} - mno\v zina je zadan\'a pomocou $\alpha-$ rezov
+\item {\bf vertik\'alna} - mno\v zina je zadan\'a pomocou funkcie pr\'islu\v snosti
+\end{itemize}
+
+\bigskip
+
+{\Large\sc Pr\'iklady.}
+
+\bigskip
+\begin{itemize}
+\item Nech $X=\{1,2,3,4\}, A=\{0.2/1,0.4/2,0.8/3,0.5/4\}.$ Ur\v cte $\alpha-$ rezy fuzzy podmno\v ziny $A.$
+\item Nech $X=R$
+$$\mu_A = \begin{cases} \frac 12(x-1) & x \in \left\langle 1,3 \right\rangle\\
+(4-x) & x \in \left( 3,4 \right\rangle\\
+0 & inde. \end{cases}$$
+ Ur\v cte $\alpha-$ rezy fuzzy podmno\v ziny $A.$
+
+
+\end{itemize}
+
+\newpage
+
+{\bf Dok\'a\v zte nasleduj\'uce tvrdenia:}
+
+\bigskip
+
+{\bf Veta.}
+Nech $A, B \in F(X).$ Potom
+\begin{itemize}
+\item Syst\'em $\alpha-$rezov $\left(A^{(\alpha)}\right)_{a \in \left(0,1\right\rangle}$ je nerast\'uci, t.j.,
+$$\forall \alpha_1, \alpha_2 \in \left(0,1\right\rangle; \alpha_1 <\alpha_2 \Rightarrow A^{(\alpha_2)} \subseteq A^{(\alpha_1)}$$
+\item $Supp(A)=\bigcup\limits_{\alpha \in \left(0,1\right\rangle} A^{(\alpha)}$
+\item $A \subseteq B \iff A^{(\alpha)} \subseteq B^{(\alpha)} \forall \alpha \in \left(0,1\right\rangle$
+\item $A = B \iff A^{(\alpha)} = B^{(\alpha)} \forall \alpha \in \left(0,1\right\rangle$
+
+\end{itemize}
+
+\bigskip
+
+{\bf Veta.}
+Nech $A, B \in F(X).$ Potom pre ka\v zd\'e $\alpha \in \left(0,1\right\rangle$ plat\'i:
+\begin{itemize}
+\item $\left( A \cap B\right)^{(\alpha)}= A^{(\alpha)} \cap B^{(\alpha)}$
+\item $\left( A \cup B\right)^{(\alpha)}= A^{(\alpha)} \cup B^{(\alpha)}$
+\end{itemize}
+
+\bigskip
+
+{\bf Veta.}
+Syst\'em ostr\'ych mno\v z\'in $\left(E_{\alpha}\right)_{\alpha \in \left(0,1\right\rangle,} E_{\alpha} \subseteq X$ je syst\'emom $\alpha-$rezov nejakej fuzzy podmno\v ziny $A \in F(X)$ pr\'ave vtedy, ak
+\begin{itemize}
+\item syst\'em $\left(E_{\alpha}\right)_{\alpha \in \left(0,1\right\rangle}$ je nerast\'uci 
+\item $\forall \alpha \in \left(0,1\right\rangle; E_\alpha = \bigcap\limits_{\beta < \alpha}E_\beta.$
+\end{itemize}
+
+\bigskip
+
+{\bf Veta.}
+Nech $\left(A_{\alpha}\right)_{\alpha \in \left(0,1\right\rangle,}$ je syst\'em $\alpha-$rezov fuzzy mno\v ziny $A \in F(X).$ Potom pre ka\v zd\'e $x \in X$ plat\'i:
+$$\mu_A(x)= \sup\limits_{\alpha \in \left(0,1\right\rangle}\min\left(\alpha, \chi_{A^{(\alpha)}}(x)\right).$$
+\end{document}
+
+\begin{frame}
+
+	\frametitle{Matematika}
+\uncover<1->{
+
+\begin{itemize}
+\item návody na rie¹enie praktických úloh}
+\uncover<2->{
+\item náznaky teor. uva¾ovania-geometria v starom Grécku\\ Euklides-Z\'aklady, 4. storo\v cie p. n. l.\\ (axiomatická výstavba elementárnej geometrie)}
+\uncover<3->{
+\item abstrakcia, ideálne objekty-nie je to únik z reálneho sveta, je to nástroj na vyu¾itie matematických poznatkov v rôznych odvetviach vedy a praxe (napr. fuzzy logika-modelovanie neurèitosti)}
+\uncover<4->{
+\item logika a teória mno¾ín}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Formálny jazyk matematiky}
+
+\begin{itemize}
+\uncover<1->{
+\item be¾ný-je urèený na be¾né dorozumievanie (paradoxy)}
+\uncover<2->{
+\begin {prik} Uva\v zujme o v\'yrokoch:\\
+$(1) 1+1=2$\\
+$(2) 1+2=2$ \\
+$(3)$ práve jeden z výrokov $(1)-(3)$ je pravdiv\'y
+\end{prik}}
+\uncover<3->{
+\begin {prik} Seneca:\\
+My¹ je slabika. My¹ ¾erie syr. Teda slabika ¾erie syr. Len¾e, slabika nemô¾e ¾ra» syr. My¹ je slabika, teda my¹ ne¾erie syr.
+\end{prik}}
+\uncover<4->{
+\item  predmetov\'y-lí¹i sa od be¾ného nielen symbolmi, ale aj spôsobom tvorenia výrokov}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+
+	\frametitle{Opakovanie-Logika}
+	\begin{itemize}
+	\item z\'akladn\'e logick\'e spojky
+\item {\scriptsize
+\begin{tabular}{c|c|cccccc}
+$ph(p)$& $ph(q)$&$ph(\neg p)$&$ph(p \wedge q)$&$ph(p \vee q)$&$ph(p \Rightarrow q)$& $ph(p \iff q)$\\
+\hline
+1&1&0&1&1&1&1\\
+1&0&0&0&1&0&0\\
+0&1&1&0&1&1&0\\
+0&0&1&0&0&1&1\\
+\end{tabular}}
+\medskip
+
+
+\end{itemize}
+
+
+
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Intuit\'ivne mno¾inové pojmy}
+
+\begin{itemize}
+\uncover<1->{
+\item Cantor: mno¾ina je zlúèenie v jedno (súhrn predmetov, vecí, dobre rozlí¹iteµných na¹ou mysµou a intuíciou)}
+\uncover<2->{
+\item viac výkladov $\to$ paradoxy (mno\v zina mno\v z\'in at\v d.)}
+\uncover<3->{
+\item kr\'iza v te\'orii mno\v z\'in $\to$ v\'ychodisko}
+\begin{itemize}
+\uncover<4->{
+\item axi\'omy }
+\uncover<5->{
+\item  triedy}
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame} \frametitle{Mno\v ziny}
+\includegraphics[width=0.5\hsize]{mnoz-ovoce}
+
+\end{frame}
+\begin{frame} \frametitle{Vennove diagramy}
+\includegraphics[width=0.5\hsize]{MNOZ-2}
+\end{frame}
+\begin{frame} \frametitle{Vennove diagramy}
+
+\includegraphics[width=0.5\hsize]{MNOZ-3}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Základn\'e mno¾inové pojmy}
+Mno\v zina m\^ o\v ze by\v t zadan\'a:
+\begin{itemize}
+\item vymenovan\'im prvkov
+\item obor pravdivosti nejakej v\'yrokovej formy
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Základn\'e mno¾inové pojmy}
+
+\uncover<1->{
+
+\begin{itemize}
+\item pr\'azdna mno\v zina}
+\uncover<2->{
+\item $\emptyset, \{\} $}
+\uncover<3->{
+\item Pozor!!!! Toto $\{\emptyset\}$ nie je pr\'azdna mno\v zina.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Základn\'e mno¾inové pojmy}
+
+\uncover<1->{
+\begin{itemize}
+\item podmno\v zina }
+\uncover<2->{
+\item $A \subseteq B \iff$  ka¾dý prvok mno¾iny $A$  je prvkom mno\v ziny $B$}
+\uncover<3->{
+\item $x \in A \Rightarrow x \in B.$}
+\uncover<4->{
+\item Ak $ A \subseteq B \mbox{ a } A \not = B, $ tak $ A$  je vlastn\'a podmno\v zina mno\v ziny  $ B, A \subset B $}
+\uncover<5->{
+\item Aký je rozdiel medzi $\in $ a $\subseteq$?}
+\uncover<6->{
+\item
+Pre ka\v zd\'u mno\v zinu $A$ plat\'i: $\emptyset \subseteq A, A \subseteq A.$}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Základn\'e mno¾inové pojmy}
+
+\uncover<1->{
+
+\begin{itemize}
+\item $P(A) $   poten\v cn\'a mno\v zina mno\v ziny $A$}
+\uncover<2->{
+\item $B \in P(A) \iff B \subseteq A$}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Zjednotenie mno\v z\'in}
+\includegraphics[width=0.5\hsize]{MNOZ-sjedn}
+\end{frame}
+\begin{frame}
+
+	\frametitle{Zjednotenie mno\v z\'in}
+
+
+\begin{itemize}
+
+\item zjednotenie
+\uncover<1->{
+$$A \cup B =\{x; x \in A \vee x \in B\}$$}
+\uncover<2->{
+$$x \in A \cup B \iff x \in A \vee x \in B$$}
+
+Vlastnosti:
+\begin{itemize}
+\item $A \cup \emptyset = $\uncover<3->{ $A$}
+\item $A \cup A=$ \uncover<4->{ $A$}
+\item $A \cup B= $ \uncover<5->{ $B \cup A$}
+\item $A \cup (B \cup C)=$ \uncover<6->{$ (A \cup B) \cup C$}
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame} 
+	\frametitle{Prienik mno\v z\'in}
+\includegraphics[width=0.5\hsize]{MNOZ-prunik}
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Prienik mno\v z\'in}
+
+
+\begin{itemize}
+
+\item prienik
+\uncover<1->{
+$$ A \cap B =\{x; x \in A \wedge x \in B\}$$}
+\uncover<2->{
+$$x \in A \cap B \iff x \in A \wedge x \in B$$}
+Vlastnosti:
+\begin{itemize}
+\item $A \cap \emptyset =$ \uncover<3->{ $\emptyset$}
+\item $A \cap A=$ \uncover<4->{ $A$}
+\item $A \cap B=$ \uncover<5->{ $B \cap A$}
+\item $A \cap (B \cap C)=$ \uncover<6->{ $(A \cap B) \cap C$}
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Rozdiel mno\v z\'in}
+\includegraphics[width=0.5\hsize]{MNOZ-rozdil}
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Rozdiel mno\v z\'in}
+
+
+\begin{itemize}
+
+\item rozdiel
+\uncover<1->{
+$$  A - B =\{x; x \in A \wedge x \not\in B\}$$}
+\uncover<2->{
+$$x \in A - B \iff x \in A \wedge x \not\in B$$}
+Vlastnosti:
+\begin{itemize}
+\item $A - \emptyset =$ \uncover<3->{ $A$}
+\item $A - A=$ \uncover<4->{ $\emptyset$}
+\item $A - B $ \uncover<5 ->{ $\not = B-A$}
+\item $A - (B - C) $ \uncover<6->{ $\not =(A - B) - C$}
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+
+	\frametitle{Doplnok mno\v ziny}
+
+
+\begin{itemize}
+
+
+\uncover<1->{
+\item $M-$ základná mno¾ina, $A \subseteq M $}
+\uncover<2->{
+\item $A'_M=M-A$}
+\uncover<3->{
+\item $x \in A'_M \iff x \in M \wedge x \not\in A$}
+\begin{itemize}
+\item $(A')'= $ \uncover<4->{ $A$}
+\item $(A \cup B)'= $\uncover<5->{ $A' \cap B'$}
+\uncover<6->{
+\item $x \not\in A \cup B \iff x \not \in A \wedge x \not\in B$}
+\item $(A \cap B)'= $ \uncover<7->{ $A' \cup B'$}
+\uncover<8->{
+\item $x \not\in A \cap B \iff x \not \in A \vee x \not\in B$}
+\item $(A - B)' = $\uncover<9->{$ A' \cup B$}
+\uncover<10->{
+\item $x \not\in A - B \iff x \not \in A \vee x \in B$}
+
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+\begin{frame} \frametitle{Doplnok prieniku a zjednotenia}
+\includegraphics[width=0.5\hsize]{MNOZ-dopl-prun}
+\includegraphics[width=0.5\hsize]{MNOZ-dopl-sjedn}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+	\frametitle{Distributívnos» operácií}
+
+
+\begin{itemize}
+\item
+$$A \cap (B \cup C)=(A \cap B) \cup (A \cap C)$$
+\item
+$$A \cup (B \cap C)=(A \cup B) \cap (A \cup C)$$
+\item Pre rozdiel mno\v z\'in distribut\'ivnos\v t vzh\v ladom k zjednoteniu ani k prieniku neplat\'i!
+\end{itemize}
+\end{frame}
+\begin{frame}
+
+	\frametitle{Rozdiel, zjednotenie a prienik}
+\begin{itemize}
+\item
+$$A - (B \cup C)=(A - B) \cap (A - C)$$
+\item
+$$A - (B \cap C)=(A - B) \cup (A - C)$$
+
+\end{itemize}
+\end{frame}
+\begin{frame} \frametitle{Symetrick\'y rozdiel mno\v z\'in}
+\includegraphics[width=0.5\hsize]{MNOZ-symrozdil}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Symetrick\'y rozdiel mno\v z\'in}
+	\begin{itemize}
+\item symetrick\'y rozdiel
+$$A \Delta B=(A-B) \cup (B-A)$$
+Vlastnosti:
+\begin{itemize}
+\uncover<1->{
+\item $A \Delta B= B \Delta A$}
+\uncover<2->{
+\item $A \Delta (B \Delta C)= (A \Delta B) \Delta C$}
+\uncover<3->{
+\item $A \cap (B \Delta C)= (A \cap B) \Delta (A \cap C)$}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Usporiadan\'e dvojice, $n-$tice}
+{\bf Defin\'icia.}	Usporiadan\'a dvojica $[x_1,x_2]$ s prvou zlo\v zkou $x_1$ a druhou zlo\v zkou $x_2$ je mno\v zina $\{\{x_1,x_2\},\{x_2\}\}.$
+
+\medskip
+
+{\bf Pozn\'amka.} $[x_1,x_2]=[y_1,y_2] \iff x_1=y_1 \wedge x_2=y_2.$
+
+\medskip
+
+{\bf Pozn\'amka.} Pod usporiadanou trojicou $[x_1,x_2,x_3]$ budeme rozumie\v t usporiadan\'u dvojicu $[[x_1,x_2],x_3].$
+
+\medskip
+
+{\bf Defin\'icia.} Nech  $n \in N, n>0.$ Usporiadan\'u $n-$ticu $[x_1,x_2, \cdots, x_n]$ definujeme nasledovne:
+\begin{itemize}
+\item $[x_1]=x_1$
+\item Ak $n>1$, tak $[x_1,x_2, \dots, x_n]=[[x_1,x_2, \cdots, x_{n-1}], x_n].$
+\end{itemize}
+
+	
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Kart\'ezsky s\'u\v cin mno\v z\'in}
+\begin{itemize}
+\item kart\'ezsky s\'u\v cin
+$$ A \times B =\{[x,y]; x \in A \wedge y \in B\}$$
+$$[x,y] \in A \times B \iff x \in A \wedge y \in B$$
+$$[x,y] \not \in A \times B \iff x \not \in A \vee y \not \in B$$
+Vlastnosti:
+\begin{itemize}
+\item  $$(A \cup B)\times C =(A \times C) \cup (B \times C)$$
+\item  $$(A \cap B)\times C =(A \times C) \cap (B \times C)$$
+\item  $$A \times (B \cup C) =(A \times B) \cup (A \times C)$$
+\item  $$A \times (B\cap C) =(A \times B) \cap (A \times C)$$
+
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+	\frametitle{Èíselné mno¾iny}
+
+
+\uncover<1->{
+\begin{itemize}
+\item Prirodzen\'e èísla 
+(prvo\v c\' isla)}
+\uncover<2->{
+\item Cel\'e  \v c\'isla}
+\uncover<3->{
+\item Racion\'alne \v c\'isla}
+\uncover<4->{
+\item Re\'alne \v c\'isla}
+\uncover<5->{
+\item Komplexn\'e \v c\'isla}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Mohutnosti mno¾ín}
+	\begin{itemize}
+	\uncover<1->{
+	\item koneèné mno¾iny}
+	\uncover<2->{
+	\item nekoneèné mno¾iny}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+
+	\frametitle{Princíp inklúzie a exklúzie}
+	\scriptsize{
+\begin{itemize}
+\item Dve mno\v ziny
+$$|A \cup B|=|A|+|B|-|A \cap B|$$
+\item Tri mno\v ziny
+$$|A \cup B \cup C|=|A|+|B|+|C|-|A \cap B|-|A \cap C|-|B \cap C|+ |A \cap B \cap C|$$
+\item $n-$ mno\v z\'in
+$$\left|\bigcup\limits_{i=1}^{n}A_i\right|= \sum\limits_{i=1}^n|A_i|-\sum\limits_{i,j; i<j}|A_i \cap A_j|+ \sum\limits_{i,j,k; i<j<k}|A_i\cap A_j\cap A_k|-$$
+$$+ \cdots (-1)^n|A_1 \cap A_2\cap \cdots A_n|$$
+\end{itemize}	}
+	
+	
+	
+\end{frame}	
+	
+	\begin{frame}
+
+	\frametitle{Kombinatorick\'e vlastnosti mno\v z\'in}
+	
+	\end{frame}
+	
+
+
+\begin{frame}
+\begin{remark}[Permut\'acie bez opakovania]
+Permut\'aciou bez opakovania z $n$-prvkovej mno\v ziny $M$ naz\'yvame ka\v
+zd\'u usp.
+$n-$ticu navz\'ajom r\^ oznych prvkov, vytvoren\'u z prvkov mno¾iny $M.$ Poèet
+v¹etk\'ych permut\'acií je 
+$$P(n) = 1 \cdot 2 \cdot 3 \dots \cdot n = n!$$
+\end{remark}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\begin{remark}[Vari\'acie bez opakovania]
+Vari\'aciou bez opakovania $k-$tej triedy  z $n$-prvkovej mno\v ziny $M$ naz\'yvame ka\v
+zd\'u usp.
+$k-$ticu navz\'ajom r\^oznych prvkov, vytvoren\'u z prvkov mno¾iny $M.$ Poèet
+v¹etk\'ych vari\'acií je 
+$$V_k(n) = n \cdot (n-1) \cdot (n-2) \dots \cdot (n-k+1) = \frac{n!}{(n-k)!}
+= {n \choose k} \cdot k!$$
+\end{remark}
+\end{frame}
+
+
+
+
+\begin{frame}
+\begin{remark}[Kombin\'acie bez opakovania]
+Kombin\'aciou bez opakovania $k-$tej triedy  z $n$-prvkovej mno\v ziny $M$ naz\'yvame ka\v
+zd\'u 
+$k-$prvkov\'u podmno\v zinu  vytvoren\'u z prvkov mno¾iny $M.$  Poèet
+v¹etk\'ych kombin\'acií je 
+$$C_k(n) = \frac{ n \cdot (n-1) \cdot (n-2) \dots \cdot (n-k+1)}{k \cdot
+(k-1) \dots 2 \cdot 1} = \frac{n!}{(n-k)!k!}
+= {n \choose k} $$
+\end{remark}
+\end{frame}
+
+\begin{frame}
+\begin{remark} [Pascalov trojuholník]
+Kombinaèn\'e èísla sa daj\'u jednoducho vypoèíta\v t pomocou tzv. {\it Pascalovho
+trojuholníka}. T\'ymto názvom oznaèujeme tabu\v lku trojuholníkového tvaru
+
+\begin{tabular}{p{1cm}ccccccccccccc}
+$n=0$&&&&&&&1\cr
+$n=1$&&&&&&1&&1\cr
+$n=2$&&&&&1&&2&&1\cr
+$n=3$&&&&1&&3&&3&&1\cr
+$n=4$&&&1&&4&&6&&4&&1\cr
+$n=5$&&1&&5&&10&&10&&5&&1\cr
+$n=6$&1&&6&&15&&20&&15&&6&&1\cr
+\end{tabular}
+\medskip
+
+\end{remark}
+\end{frame}
+
+\begin{frame}
+\begin{remark}[Vari\'acie s opakovan\'im]
+Vari\'aciou s opakovan\'im $k-$tej triedy  z $n$-prvkovej mno\v ziny $M$ naz\'yvame ka\v
+zd\'u usp.
+$k-$ticu vytvoren\'u z prvkov mno¾iny $M$ tak, \v ze v tejto $k-$tici  sa
+ka\v zd\'y prvok m\^ o¾e vyskytn\'u\v t a¾ $k-$kr\'at. Poèet
+v¹etk\'ych vari\'acií je 
+$$V_k'(n) = n^k.$$
+\end{remark}
+\end{frame}
+\begin{frame}
+\begin{remark}[Kombin\'acie s opakovan\'im]
+Kombin\'aciou s opakovan\'im $k-$tej triedy  z $n$-prvkovej mno\v ziny $M$ naz\'yvame ka\v
+zd\'u skupinu o 
+$k-$prvkoch  vytvoren\'u z prvkov mno¾iny $M$ tak, \v ze v tejto skupine  sa
+ka\v zd\'y prvok m\^ o¾e vyskytn\'ut a¾ $k-$kr\'at.  Poèet
+v¹etk\'ych kombin\'acií je 
+$$C_k'(n) = {{n-1+k} \choose k} $$
+\end{remark}
+\end{frame}
+
+\begin{frame}
+\begin{remark}[Permut\'acie s opakovan\'im]
+Permut\'aciou s opakovan\'im z $n$-prvkovej mno\v ziny $M=\{a_1, a_2, ...
+a_p\}$ s opakovan\'im prvku $a_i$ pr\'ave $k_i$-kr\'at naz\'yv\'ame ka\v
+zd\'u usp.
+$n-$ticu navz\'ajom r\^ oznych prvkov, vytvoren\'u zo v\v estk\'ych prvkov mno¾iny $M,$
+\v ze sa prvek $a_i$ vyskytuje pr\'ave $k_i-$kr\'at ($k_1 + k_2 + ...
++k_p =n$.) Poèet
+v¹etk\'ych permut\'acií je 
+$$P'(n) = \frac{ n!}{k_1!k_2! ... k_p!}$$
+\end{remark}
+\end{frame}
+
+\begin{frame}
+
+	\frametitle{Dôkazy}
+\includegraphics[width=0.5\hsize]{wantproof}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dôkazy}
+
+	Typy dôkazov
+	\begin{itemize}
+	\item priamy dôkaz
+	\item nepriamy dôkaz
+	\item dôkaz matematickou indukciou
+	\end{itemize}
+	\end{frame}
+
+\end{document}
